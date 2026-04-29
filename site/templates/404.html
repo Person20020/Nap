@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if PLAUSIBLE_SRC_URL and PLAUSIBLE_DATA_API and PLAUSIBLE_DATA_DOMAIN %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        plausible("404");
+    });
+</script>
+{% endif %}
+
+<h1>404 - Not Found</h1>
+<p>This page doesn't exist.</p>
+<a href="/">Go back home</a>
+
+{% endblock %}

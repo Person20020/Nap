@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{% block title %}Nap{% endblock %}</title>
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/styles.css') }}"
+        />
+        {% if PLAUSIBLE_SRC_URL and PLAUSIBLE_DATA_API and PLAUSIBLE_DATA_DOMAIN %}
+        <script
+            defer
+            src="{{ PLAUSIBLE_SRC_URL }}"
+            data-api="{{ PLAUSIBLE_DATA_API }}"
+            data-domain="{{ PLAUSIBLE_DATA_DOMAIN }}"
+        ></script>
+        {% endif %}
+    </head>
+    <body>
+        <header>
+            <h1>
+                <a href="/">
+                    <svg width="64" height="64" viewBox="9 9 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="9" y="9" width="100%" height="100%" fill="white" rx="16" ry="16"/>
+                        <path d="M82 54C82 38.536 69.464 26 54 26C38.536 26 26 38.536 26 54C26 69.464 38.536 82 54 82V87C35.7746 87 21 72.2254 21 54C21 35.7746 35.7746 21 54 21C72.2254 21 87 35.7746 87 54C87 72.2254 72.2254 87 54 87V82C69.464 82 82 69.464 82 54Z" fill="#2C2C2C"/>
+                        <path d="M37.4285 31.4287C34.0162 36.0687 32 41.7988 32 48C32 63.464 44.536 76 60 76C66.2013 76 71.9313 73.9836 76.5713 70.5713C71.4744 77.5019 63.2627 82 54 82C38.536 82 26 69.464 26 54C26 44.7374 30.4979 36.5256 37.4285 31.4287Z" fill="#548EF3"/>
+                        <path d="M51.5 52.5566V32C51.5 30.6193 52.6193 29.5 54 29.5C55.3807 29.5 56.5 30.6193 56.5 32V52.5566L66.5 58.3301C67.6957 59.0204 68.1054 60.5494 67.415 61.7451C66.7247 62.9408 65.1957 63.3505 64 62.6602L54 56.8867C52.453 55.9936 51.5 54.343 51.5 52.5566Z" fill="#2C2C2C"/>
+                    </svg>
+                    Nap
+                </a>
+            </h1>
+            <nav>
+                <a href="http://github.com/person20020/nap" target="_blank">GitHub</a>
+            </nav>
+        </header>
+        <main>{% block content %}{% endblock %}</main>
+        <footer>
+            <p>By <a href="https://github.com/person20020">@Person20020</a></p>
+            <p>│</p>
+            <a href="https://github.com/person20020/nap/tree/HEAD/site"
+                target="_blank"
+                >Site source</a
+            >
+        </footer>
+    </body>
+</html>
