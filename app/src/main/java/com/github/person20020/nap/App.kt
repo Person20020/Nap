@@ -17,7 +17,7 @@ import com.github.person20020.nap.ui.components.BottomNavBar
 import com.github.person20020.nap.ui.screens.HomeScreen
 import com.github.person20020.nap.ui.screens.OptionsScreen
 import com.github.person20020.nap.ui.screens.SettingsScreen
-import com.github.person20020.nap.ui.theme.DeveloperSettingsScreen
+import com.github.person20020.nap.ui.screens.DeveloperSettingsScreen
 import com.github.person20020.nap.viewmodels.MainViewModel
 
 

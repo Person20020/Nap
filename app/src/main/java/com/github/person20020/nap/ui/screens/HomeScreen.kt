@@ -19,6 +19,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.person20020.nap.Nap
 import com.github.person20020.nap.ui.components.ColumnWithContentPadding
 import com.github.person20020.nap.ui.components.HueSelector
+import com.github.person20020.nap.ui.components.ScreenTitle
 import com.github.person20020.nap.viewmodels.MainViewModel
 
 @Composable
@@ -30,9 +31,9 @@ fun HomeScreen(
     ColumnWithContentPadding(
         modifier = Modifier.fillMaxSize()
     ) {
-        ProvideTextStyle(MaterialTheme.typography.titleLarge) {
-            Text("Home")
-        }
+        ScreenTitle(
+            text = "Home",
+        )
 
         HueSelector(
             modifier = Modifier

@@ -1,8 +1,5 @@
 package com.github.person20020.nap.ui.screens
 
-import android.media.AudioFocusRequest
-import android.media.AudioManager
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -35,9 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.person20020.nap.constants.TitleBottomSpace
 import com.github.person20020.nap.ui.components.ColumnWithContentPadding
@@ -45,6 +40,7 @@ import com.github.person20020.nap.ui.components.HueSelector
 import com.github.person20020.nap.ui.components.ListDialogPreference
 import com.github.person20020.nap.ui.components.MinimalDialog
 import com.github.person20020.nap.ui.components.PreferenceEntry
+import com.github.person20020.nap.ui.components.ScreenTitle
 import com.github.person20020.nap.ui.components.SwitchPreference
 import com.github.person20020.nap.ui.theme.DefaultSeedColor
 import com.github.person20020.nap.utils.toHsv
@@ -62,12 +58,9 @@ fun SettingsScreen(
     ColumnWithContentPadding(
         modifier = Modifier.fillMaxSize()
     ) {
-        ProvideTextStyle(MaterialTheme.typography.titleLarge) {
-            Text("Settings")
-            Spacer(
-                modifier = Modifier.height(TitleBottomSpace)
-            )
-        }
+        ScreenTitle(
+            text = "Settings",
+        )
 
         ElevatedCard() {
             // Dark theme
@@ -188,7 +181,7 @@ fun SettingsScreen(
             // Developer settings
             var enableDeveloperSettings by remember { mutableStateOf(false) }
             SwitchPreference(
-                headlineContent = { Text("Enable developer settings") },
+                headlineContent = { Text("Show developer settings") },
                 isChecked = enableDeveloperSettings,
                 onCheckedChange = {
                     enableDeveloperSettings = !enableDeveloperSettings
@@ -211,25 +204,6 @@ fun SettingsScreen(
                         },
                         onClick = {
                             onNavigate("settings/developer")
-                        },
-                    )
-
-                    // Pause media test
-                    val audioManager = getSystemService(LocalContext.current, AudioManager::class.java)
-                    PreferenceEntry(
-                        headlineContent = { Text("Pause media") },
-                        onClick = {
-                            val focusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
-                                .build()
-
-                            val result = audioManager?.requestAudioFocus(focusRequest)
-                            if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-                                Log.d("Audio focus test", "Audio focus granted")
-                                audioManager.abandonAudioFocusRequest(focusRequest)
-                            }
-                            else {
-                                Log.d("Audio focus test", "Audio focus request failed")
-                            }
                         },
                     )
                 }

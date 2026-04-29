@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.github.person20020.nap.constants.TitleBottomSpace
 import com.github.person20020.nap.ui.components.ColumnWithContentPadding
+import com.github.person20020.nap.ui.components.ScreenTitle
 import com.github.person20020.nap.ui.components.SliderPreference
 import com.github.person20020.nap.ui.components.SwitchPreference
 import com.github.person20020.nap.viewmodels.MainViewModel
@@ -30,12 +31,9 @@ fun OptionsScreen(
     ColumnWithContentPadding(
         modifier = Modifier.fillMaxSize()
     ) {
-        ProvideTextStyle(MaterialTheme.typography.titleLarge) {
-            Text("Options")
-            Spacer(
-                modifier = Modifier.height(TitleBottomSpace)
-            )
-        }
+        ScreenTitle(
+            text = "Options",
+        )
 
         ElevatedCard() {
             // Timer length slider
