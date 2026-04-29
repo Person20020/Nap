@@ -32,6 +32,11 @@ def index():
     return flask.render_template("index.html")
 
 
+@app.route("/health")
+def health():
+    return flask.jsonify({"status": "healthy"}), 200
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return flask.render_template("404.html"), 404
