@@ -29,48 +29,49 @@ fun MinimalDialog(
     confirmButtonText: String = "OK",
     extraButtonText: String? = null,
     onExtraButton: (() -> Unit)? = null,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
-
     Dialog(
-        onDismissRequest = onDismissRequest
+        onDismissRequest = onDismissRequest,
     ) {
         Card(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(DialogCornerRadius)
+            shape = RoundedCornerShape(DialogCornerRadius),
         ) {
-            Surface() { // TODO: Remove if not needed?
+            Surface {
+                // TODO: Remove if not needed?
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
                 ) {
                     content()
                     Row(
                         horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         if (extraButtonText != null) {
                             TextButton(
-                                onClick = { (onExtraButton?:{})() }
+                                onClick = { (onExtraButton ?: {})() },
                             ) {
                                 Text(extraButtonText)
                             }
                             Spacer(
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(1f),
                             )
                         }
                         TextButton(
                             onClick = {
                                 (onCancelButton ?: onDismissRequest)()
-                            }
+                            },
                         ) {
                             Text(cancelButtonText)
                         }
                         Spacer(modifier = Modifier.width(DialogButtonSpacerWidth))
                         TextButton(
-                            onClick = onConfirmButton
+                            onClick = onConfirmButton,
                         ) {
                             Text(confirmButtonText)
                         }

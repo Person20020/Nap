@@ -49,24 +49,24 @@ fun PreferenceEntry(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(
-                enabled = isEnabled,
-                onClick = onClick
-            )
-            .alpha(if (isEnabled) 1f else 0.5f)
-            .padding(16.dp)
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .clickable(
+                    enabled = isEnabled,
+                    onClick = onClick,
+                ).alpha(if (isEnabled) 1f else 0.5f)
+                .padding(16.dp),
     ) {
         if (icon != null) {
             Box(
-                modifier = Modifier.padding(end = 4.dp)
+                modifier = Modifier.padding(end = 4.dp),
             ) {
                 icon()
             }
 
             Spacer(
-                modifier = Modifier.width(12.dp)
+                modifier = Modifier.width(12.dp),
             )
         }
 
@@ -86,13 +86,12 @@ fun PreferenceEntry(
 
         if (trailingContent != null) {
             Spacer(
-                modifier = Modifier.width(12.dp)
+                modifier = Modifier.width(12.dp),
             )
             trailingContent()
         }
     }
 }
-
 
 @Composable
 fun <T> ListDialogPreference(
@@ -113,10 +112,10 @@ fun <T> ListDialogPreference(
         modifier = modifier,
         headlineContent = headlineContent,
         supportingContent = supportingContent,
-        trailingContent = { (trailingContent?:{})() },
+        trailingContent = { (trailingContent ?: {})() },
         icon = icon,
         isEnabled = isEnabled,
-        onClick = { showListDialog = true }
+        onClick = { showListDialog = true },
     )
 
     if (showListDialog) {
@@ -130,20 +129,21 @@ fun <T> ListDialogPreference(
                 onConfirm(selectedIndexVar)
             },
         ) {
-            Column() {
+            Column {
                 options.forEachIndexed { index, option ->
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                if (selectedIndexVar != index) {
-                                    selectedIndexVar = index
-                                    if (onValueChange != null) {
-                                        onValueChange(index)
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    if (selectedIndexVar != index) {
+                                        selectedIndexVar = index
+                                        if (onValueChange != null) {
+                                            onValueChange(index)
+                                        }
                                     }
-                                }
-                            },
+                                },
                     ) {
                         RadioButton(
                             selected = index == selectedIndexVar,
@@ -154,7 +154,7 @@ fun <T> ListDialogPreference(
                                         onValueChange(index)
                                     }
                                 }
-                            }
+                            },
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(option.toString())
@@ -164,7 +164,6 @@ fun <T> ListDialogPreference(
         }
     }
 }
-
 
 @Composable
 fun SwitchPreference(
@@ -183,11 +182,12 @@ fun SwitchPreference(
         icon = icon,
         trailingContent = {
             Box(
-                modifier = Modifier.clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                    onClick = {},
-                )
+                modifier =
+                    Modifier.clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = {},
+                    ),
             ) {
                 Switch(
                     checked = isChecked,
@@ -199,7 +199,6 @@ fun SwitchPreference(
         onClick = { onCheckedChange(null) },
     )
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -222,7 +221,7 @@ fun SliderPreference(
                 headlineContent()
                 if (valueDisplay != null) {
                     Spacer(
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                     valueDisplay()
                 }
@@ -234,16 +233,19 @@ fun SliderPreference(
                 state = sliderState,
                 enabled = isEnabled,
                 colors = (
-                    if (!showTickMarks) SliderDefaults.colors(
-                        activeTickColor = Color.Transparent,
-                        inactiveTickColor = Color.Transparent,
-                    )
-                    else SliderDefaults.colors()
+                    if (!showTickMarks) {
+                        SliderDefaults.colors(
+                            activeTickColor = Color.Transparent,
+                            inactiveTickColor = Color.Transparent,
+                        )
+                    } else {
+                        SliderDefaults.colors()
+                    }
                 ),
             )
             if (supportingContent != null) {
                 ProvideTextStyle(
-                    MaterialTheme.typography.bodySmall
+                    MaterialTheme.typography.bodySmall,
                 ) {
                     supportingContent()
                 }
@@ -255,14 +257,11 @@ fun SliderPreference(
     )
 }
 
-
 @Composable
-fun PreferenceGroupTitle(
-    title: String,
-) {
+fun PreferenceGroupTitle(title: String) {
     Text(
         text = title,
         style = MaterialTheme.typography.titleMedium,
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
     )
 }

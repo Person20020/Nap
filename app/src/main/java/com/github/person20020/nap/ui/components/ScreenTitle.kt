@@ -15,7 +15,8 @@ fun ScreenTitle(
     Text(
         text = text,
         style = MaterialTheme.typography.titleLarge,
-        modifier = modifier
-            .then(Modifier.padding(bottom = 16.dp)),
+        modifier =
+            modifier
+                .then(Modifier.padding(bottom = 16.dp)),
     )
 }

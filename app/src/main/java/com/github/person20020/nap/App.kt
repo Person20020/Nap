@@ -14,12 +14,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.github.person20020.nap.ui.components.BottomNavBar
+import com.github.person20020.nap.ui.screens.DeveloperSettingsScreen
 import com.github.person20020.nap.ui.screens.HomeScreen
 import com.github.person20020.nap.ui.screens.OptionsScreen
 import com.github.person20020.nap.ui.screens.SettingsScreen
-import com.github.person20020.nap.ui.screens.DeveloperSettingsScreen
 import com.github.person20020.nap.viewmodels.MainViewModel
-
 
 val routes = listOf("home", "options", "settings", "settings/developer")
 
@@ -31,9 +30,9 @@ fun App(
     Scaffold(
         bottomBar = {
             BottomNavBar(
-                navController = navController
+                navController = navController,
             )
-        }
+        },
     ) { innerPadding ->
         NavHost(
             navController = navController,
@@ -58,9 +57,10 @@ fun App(
                     slideOutHorizontally { it / 8 } + fadeOut(tween(100))
                 }
             },
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
         ) {
             composable("home") {
                 HomeScreen(mainViewModel)
@@ -73,7 +73,7 @@ fun App(
                     mainViewModel,
                     onNavigate = { route ->
                         navController.navigate(route)
-                    }
+                    },
                 )
             }
 

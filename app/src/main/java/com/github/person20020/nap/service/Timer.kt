@@ -21,7 +21,5 @@ class Timer : Service() {
         Toast.makeText(this, "service done", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onBind(p0: Intent?): IBinder? {
-        return null
-    }
+    override fun onBind(p0: Intent?): IBinder? = null
 }

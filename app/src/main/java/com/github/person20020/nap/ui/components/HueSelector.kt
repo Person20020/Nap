@@ -27,7 +27,6 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 
-
 val hueColors =
     Array(360) { i ->
         Color.hsv(i.toFloat(), 1f, 1f)
@@ -65,9 +64,14 @@ fun HueSelector(
     val ringThicknessPx = with(LocalDensity.current) { thickness.toPx() }
     val ringSelectionBufferDistancePx = with(LocalDensity.current) { ringSelectionBufferDistance.toPx() }
 
-    fun isOnRing(offset: Offset, ringThicknessPx: Float, ringSelectionBufferDistancePx: Float): Boolean {
+    fun isOnRing(
+        offset: Offset,
+        ringThicknessPx: Float,
+        ringSelectionBufferDistancePx: Float,
+    ): Boolean {
         val dist = (offset - center).getDistance()
-        return dist in (radius - ringThicknessPx - ringSelectionBufferDistancePx) .. (radius + ringThicknessPx + ringSelectionBufferDistancePx)
+        return dist in
+            (radius - ringThicknessPx - ringSelectionBufferDistancePx)..(radius + ringThicknessPx + ringSelectionBufferDistancePx)
     }
 
     fun angleFromOffset(offset: Offset): Float {
@@ -78,45 +82,46 @@ fun HueSelector(
     }
 
     Canvas(
-        modifier = modifier
-            .aspectRatio(1f)
-            .width(diameter + (thickness + (10.dp)))
-//            .border(2.dp, MaterialTheme.colorScheme.secondary)
-            .pointerInput(Unit) {
-                detectTapGestures { offset ->
-                    if (isOnRing(offset, ringThicknessPx, ringSelectionBufferDistancePx)) {
-                        val hue = angleFromOffset(offset)
-                        onHueChanged(hue)
-                        selectedHue = hue
-                    }
-                }
-            }
-            .pointerInput(Unit) {
-                detectDragGestures(
-                    onDragStart = { offset ->
-                        dragStartOnRing = isOnRing(offset, ringThicknessPx, ringSelectionBufferDistancePx)
-                    },
-                    onDrag = { change, _ ->
-                        // Drag went through the selector ring
-                        if (!dragThroughRing) {
-                            dragThroughRing = isOnRing(
-                                change.position,
-                                ringThicknessPx,
-                                ringSelectionBufferDistancePx
-                            )
-                        }
-                        if (dragStartOnRing or (allowDragThroughRing and dragThroughRing)) {
-                            val hue = angleFromOffset(change.position)
+        modifier =
+            modifier
+                .aspectRatio(1f)
+                .width(diameter + (thickness + (10.dp)))
+                // .border(2.dp, MaterialTheme.colorScheme.secondary)
+                .pointerInput(Unit) {
+                    detectTapGestures { offset ->
+                        if (isOnRing(offset, ringThicknessPx, ringSelectionBufferDistancePx)) {
+                            val hue = angleFromOffset(offset)
                             onHueChanged(hue)
                             selectedHue = hue
                         }
-                    },
-                    onDragEnd = {
-                        dragStartOnRing = false
-                        dragThroughRing = false
                     }
-                )
-            },
+                }.pointerInput(Unit) {
+                    detectDragGestures(
+                        onDragStart = { offset ->
+                            dragStartOnRing = isOnRing(offset, ringThicknessPx, ringSelectionBufferDistancePx)
+                        },
+                        onDrag = { change, _ ->
+                            // Drag went through the selector ring
+                            if (!dragThroughRing) {
+                                dragThroughRing =
+                                    isOnRing(
+                                        change.position,
+                                        ringThicknessPx,
+                                        ringSelectionBufferDistancePx,
+                                    )
+                            }
+                            if (dragStartOnRing or (allowDragThroughRing and dragThroughRing)) {
+                                val hue = angleFromOffset(change.position)
+                                onHueChanged(hue)
+                                selectedHue = hue
+                            }
+                        },
+                        onDragEnd = {
+                            dragStartOnRing = false
+                            dragThroughRing = false
+                        },
+                    )
+                },
     ) {
         val selectorRingStrokeRadius = diameter.toPx() / 2 - ringThicknessPx / 2
 
@@ -124,10 +129,11 @@ fun HueSelector(
         radius = diameter.toPx() / 2
 
         // Ring
-        val sweepBrush = Brush.sweepGradient(
-            colors = hueColors.toList(),
-            center = center,
-        )
+        val sweepBrush =
+            Brush.sweepGradient(
+                colors = hueColors.toList(),
+                center = center,
+            )
         drawCircle(
             brush = sweepBrush,
             style = Stroke(width = ringThicknessPx),
@@ -153,7 +159,8 @@ fun HueSelector(
 
         // Selector dot
         val selectedHueRads = selectedHue / 180 * PI.toFloat()
-        val selectorDotCenter = center + Offset(cos(selectedHueRads) * (radius - ringThicknessPx / 2), sin(selectedHueRads) * (radius - ringThicknessPx / 2))
+        val selectorDotCenter =
+            center + Offset(cos(selectedHueRads) * (radius - ringThicknessPx / 2), sin(selectedHueRads) * (radius - ringThicknessPx / 2))
         // Shadow
         if (selectorShadow > 0.dp) {
             drawCircle(

@@ -11,27 +11,31 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-
 class MainViewModel(
-    private val prefs: PreferencesRepository
+    private val prefs: PreferencesRepository,
 ) : ViewModel() {
-    val darkTheme: StateFlow<Int> = prefs.darkTheme
-        .stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(5000), initialValue = 0)
-    val dynamicColors: StateFlow<Boolean> = prefs.dynamicColors
-        .stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(5000), initialValue = false)
-    val seedColorHue: StateFlow<Float> = prefs.seedColorHue
-        .stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(5000), initialValue = 0f)
+    val darkTheme: StateFlow<Int> =
+        prefs.darkTheme
+            .stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(5000), initialValue = 0)
+    val dynamicColors: StateFlow<Boolean> =
+        prefs.dynamicColors
+            .stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(5000), initialValue = false)
+    val seedColorHue: StateFlow<Float> =
+        prefs.seedColorHue
+            .stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(5000), initialValue = 0f)
 
     fun setDarkTheme(value: Int) {
         viewModelScope.launch {
             prefs.setDarkTheme(value)
         }
     }
+
     fun setDynamicColors(value: Boolean) {
         viewModelScope.launch {
             prefs.setDynamicColors(value)
         }
     }
+
     fun setSeedColorHue(value: Float) {
         viewModelScope.launch {
             prefs.setSeedColor(value)

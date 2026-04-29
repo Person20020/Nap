@@ -23,24 +23,23 @@ import com.github.person20020.nap.ui.components.ScreenTitle
 import com.github.person20020.nap.viewmodels.MainViewModel
 
 @Composable
-fun HomeScreen(
-    mainViewModel: MainViewModel,
-) {
+fun HomeScreen(mainViewModel: MainViewModel) {
     val seedColorHue by mainViewModel.seedColorHue.collectAsStateWithLifecycle()
 
     ColumnWithContentPadding(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         ScreenTitle(
             text = "Home",
         )
 
         HueSelector(
-            modifier = Modifier
-                .padding(vertical = 16.dp),
+            modifier =
+                Modifier
+                    .padding(vertical = 16.dp),
             onHueChanged = {
                 mainViewModel.setSeedColorHue(it)
-                //Log.d("HueSelector", "Selected hue: ${it.toString()}")
+                // Log.d("HueSelector", "Selected hue: ${it.toString()}")
             },
             initialHue = seedColorHue,
             diameter = 300.dp,
@@ -49,9 +48,10 @@ fun HomeScreen(
 
         // Seed color sample
         Box(
-            modifier = Modifier
-                .background(color = Color.hsv(seedColorHue, 1f, 1f), shape = RoundedCornerShape(25))
-                .padding(32.dp)
+            modifier =
+                Modifier
+                    .background(color = Color.hsv(seedColorHue, 1f, 1f), shape = RoundedCornerShape(25))
+                    .padding(32.dp),
         )
     }
 }

@@ -12,7 +12,6 @@ import com.materialkolor.DynamicMaterialTheme
 import com.materialkolor.PaletteStyle
 import com.materialkolor.rememberDynamicMaterialThemeState
 
-
 @Composable
 fun NapTheme(
     seedColor: Color,
@@ -20,8 +19,6 @@ fun NapTheme(
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit,
 ) {
-
-
     if (dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         val context = LocalContext.current
         MaterialTheme(
@@ -29,13 +26,13 @@ fun NapTheme(
             typography = Typography,
             content = content,
         )
-    }
-    else {
-        val dynamicThemeState = rememberDynamicMaterialThemeState(
-            seedColor = seedColor,
-            isDark = isDark,
-            style = PaletteStyle.Content,
-        )
+    } else {
+        val dynamicThemeState =
+            rememberDynamicMaterialThemeState(
+                seedColor = seedColor,
+                isDark = isDark,
+                style = PaletteStyle.Content,
+            )
         DynamicMaterialTheme(
             state = dynamicThemeState,
             animate = true,

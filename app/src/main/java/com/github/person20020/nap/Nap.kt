@@ -1,7 +1,6 @@
 package com.github.person20020.nap
 
 import android.app.Application
-import android.preference.PreferenceDataStore
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore

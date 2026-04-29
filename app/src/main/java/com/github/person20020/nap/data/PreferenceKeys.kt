@@ -5,7 +5,6 @@ import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 
-
 object PreferenceKeys {
     // Appearance
     val DARK_THEME = intPreferencesKey("dark_theme")

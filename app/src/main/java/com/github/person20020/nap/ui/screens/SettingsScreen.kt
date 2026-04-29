@@ -56,13 +56,13 @@ fun SettingsScreen(
     val seedColorHue by mainViewModel.seedColorHue.collectAsStateWithLifecycle()
 
     ColumnWithContentPadding(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         ScreenTitle(
             text = "Settings",
         )
 
-        ElevatedCard() {
+        ElevatedCard {
             // Dark theme
             ListDialogPreference(
                 headlineContent = { Text("Dark theme") },
@@ -75,11 +75,12 @@ fun SettingsScreen(
                 },
                 trailingContent = {
                     Icon(
-                        imageVector = when (darkTheme) {
-                            -1 ->  Icons.Rounded.LightMode
-                            1 -> Icons.Rounded.DarkMode
-                            else -> Icons.Rounded.Contrast
-                        },
+                        imageVector =
+                            when (darkTheme) {
+                                -1 -> Icons.Rounded.LightMode
+                                1 -> Icons.Rounded.DarkMode
+                                else -> Icons.Rounded.Contrast
+                            },
                         contentDescription = null,
                     )
                 },
@@ -89,7 +90,6 @@ fun SettingsScreen(
                     mainViewModel.setDarkTheme(it - 1)
                 },
             )
-
 
             // Dynamic/system colors
             SwitchPreference(
@@ -113,12 +113,12 @@ fun SettingsScreen(
                     supportingContent = { Text("App base color") },
                     trailingContent = {
                         Box(
-                            modifier = Modifier
-                                .background(
-                                    Color.hsv(seedColorHue, 1f, 1f),
-                                    CircleShape,
-                                )
-                                .size(24.dp)
+                            modifier =
+                                Modifier
+                                    .background(
+                                        Color.hsv(seedColorHue, 1f, 1f),
+                                        CircleShape,
+                                    ).size(24.dp),
                         )
                     },
                     onClick = {
@@ -142,7 +142,7 @@ fun SettingsScreen(
                         hue = DefaultSeedColor.toHsv().first()
                     },
                 ) {
-                    BoxWithConstraints() {
+                    BoxWithConstraints {
                         HueSelector(
                             onHueChanged = {
                                 hue = it
@@ -157,10 +157,10 @@ fun SettingsScreen(
         }
 
         Spacer(
-            modifier = Modifier.height(16.dp)
+            modifier = Modifier.height(16.dp),
         )
 
-        ElevatedCard() {
+        ElevatedCard {
             // Display remaining time (as a notification)
             var displayRemainingTime by remember { mutableStateOf(false) }
             SwitchPreference(
@@ -174,10 +174,10 @@ fun SettingsScreen(
         }
 
         Spacer(
-            modifier = Modifier.height(16.dp)
+            modifier = Modifier.height(16.dp),
         )
 
-        ElevatedCard() {
+        ElevatedCard {
             // Developer settings
             var enableDeveloperSettings by remember { mutableStateOf(false) }
             SwitchPreference(
@@ -193,7 +193,7 @@ fun SettingsScreen(
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut(),
             ) {
-                Column{
+                Column {
                     PreferenceEntry(
                         headlineContent = { Text("Developer settings") },
                         trailingContent = {
