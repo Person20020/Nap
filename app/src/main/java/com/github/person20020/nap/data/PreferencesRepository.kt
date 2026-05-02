@@ -1,10 +1,10 @@
 package com.github.person20020.nap.data
 
+import androidx.compose.ui.graphics.toColorLong
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.github.person20020.nap.ui.theme.DefaultSeedColor
-import com.github.person20020.nap.utils.toHsv
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -18,9 +18,9 @@ class PreferencesRepository(
     val dynamicColors: Flow<Boolean> =
         dataStore.data
             .map { it[PreferenceKeys.DYNAMIC_COLORS] ?: false }
-    val seedColorHue: Flow<Float> =
+    val seedColor: Flow<Long> =
         dataStore.data
-            .map { it[PreferenceKeys.SEED_COLOR_HUE] ?: DefaultSeedColor.toHsv()[0] }
+            .map { it[PreferenceKeys.SEED_COLOR] ?: DefaultSeedColor.toColorLong() }
 
     val timerLength: Flow<Int> =
         dataStore.data
@@ -64,8 +64,8 @@ class PreferencesRepository(
         dataStore.edit { it[PreferenceKeys.DYNAMIC_COLORS] = value }
     }
 
-    suspend fun setSeedColor(value: Float) {
-        dataStore.edit { it[PreferenceKeys.SEED_COLOR_HUE] = value }
+    suspend fun setSeedColor(value: Long) {
+        dataStore.edit { it[PreferenceKeys.SEED_COLOR] = value }
     }
 
     suspend fun setTimerLength(value: Int) {

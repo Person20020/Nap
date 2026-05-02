@@ -9,7 +9,7 @@ object PreferenceKeys {
     // Appearance
     val DARK_THEME = intPreferencesKey("dark_theme")
     val DYNAMIC_COLORS = booleanPreferencesKey("dynamic_colors")
-    val SEED_COLOR_HUE = floatPreferencesKey("seed_color_hue")
+    val SEED_COLOR = longPreferencesKey("seed_color")
 
     // Timer options
     val TIMER_LENGTH = intPreferencesKey("timer_length")

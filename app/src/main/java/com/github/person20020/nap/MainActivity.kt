@@ -10,6 +10,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.fromColorLong
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -33,21 +34,21 @@ class MainActivity : ComponentActivity() {
 
         val prefs = (application as Nap).repository
 
-        var initialSeedColorHue: Float? = null
+        var initialSeedColor: Long? = null
 
-        splashScreen.setKeepOnScreenCondition { initialSeedColorHue == null }
+        splashScreen.setKeepOnScreenCondition { initialSeedColor == null }
 
         lifecycleScope.launch {
             val initialDarkTheme = prefs.darkTheme.first()
             val initialDynamicColor = prefs.dynamicColors.first()
-            initialSeedColorHue = prefs.seedColorHue.first()
+            initialSeedColor = prefs.seedColor.first()
 
             setContent {
                 val navController = rememberNavController()
 
                 val darkTheme by prefs.darkTheme.collectAsStateWithLifecycle(initialDarkTheme)
                 val dynamicColors by prefs.dynamicColors.collectAsStateWithLifecycle(initialDynamicColor)
-                val seedColorHue by prefs.seedColorHue.collectAsStateWithLifecycle(initialSeedColorHue)
+                val seedColor by prefs.seedColor.collectAsStateWithLifecycle(initialSeedColor)
 
                 val isDark =
                     when (darkTheme) {
@@ -74,7 +75,7 @@ class MainActivity : ComponentActivity() {
                 }
 
                 NapTheme(
-                    seedColor = Color.hsv(seedColorHue, 1f, 1f),
+                    seedColor = Color.fromColorLong(seedColor),
                     isDark = isDark,
                     dynamicColor = dynamicColors,
                 ) {

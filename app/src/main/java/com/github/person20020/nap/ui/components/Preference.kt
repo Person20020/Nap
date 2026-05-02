@@ -262,6 +262,9 @@ fun PreferenceGroupTitle(title: String) {
     Text(
         text = title,
         style = MaterialTheme.typography.titleMedium,
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+        modifier =
+            Modifier
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 12.dp, top = 16.dp),
     )
 }

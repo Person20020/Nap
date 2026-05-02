@@ -2,10 +2,7 @@ package com.github.person20020.nap.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val DefaultSeedColor = Color(0xFF00AAFF)
-
-val SelectorDotOutlineColorDark = Color(0xFF000000)
-val SelectorDotOutlineColorLight = Color(0xFFFFFFFF)
+val DefaultSeedColor = Color(0xFF0080FF)
 
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)

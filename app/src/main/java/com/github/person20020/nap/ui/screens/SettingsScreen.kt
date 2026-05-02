@@ -21,29 +21,29 @@ import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.fromColorLong
+import androidx.compose.ui.graphics.toColorLong
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.github.person20020.nap.constants.TitleBottomSpace
+import com.github.person20020.nap.constants.ElevatedCardSpacing
 import com.github.person20020.nap.ui.components.ColumnWithContentPadding
-import com.github.person20020.nap.ui.components.HueSelector
+import com.github.person20020.nap.ui.components.HueSaturationSelector
 import com.github.person20020.nap.ui.components.ListDialogPreference
 import com.github.person20020.nap.ui.components.MinimalDialog
 import com.github.person20020.nap.ui.components.PreferenceEntry
 import com.github.person20020.nap.ui.components.ScreenTitle
 import com.github.person20020.nap.ui.components.SwitchPreference
 import com.github.person20020.nap.ui.theme.DefaultSeedColor
-import com.github.person20020.nap.utils.toHsv
+import com.github.person20020.nap.utils.toHsl
 import com.github.person20020.nap.viewmodels.MainViewModel
 
 @Composable
@@ -53,7 +53,9 @@ fun SettingsScreen(
 ) {
     val darkTheme by mainViewModel.darkTheme.collectAsStateWithLifecycle()
     val dynamicColors by mainViewModel.dynamicColors.collectAsStateWithLifecycle()
-    val seedColorHue by mainViewModel.seedColorHue.collectAsStateWithLifecycle()
+    val seedColor by mainViewModel.seedColor.collectAsStateWithLifecycle()
+
+    val developerSettingsEnabled by mainViewModel.developerSettings.collectAsStateWithLifecycle()
 
     ColumnWithContentPadding(
         modifier = Modifier.fillMaxSize(),
@@ -116,7 +118,7 @@ fun SettingsScreen(
                             modifier =
                                 Modifier
                                     .background(
-                                        Color.hsv(seedColorHue, 1f, 1f),
+                                        Color.fromColorLong(seedColor),
                                         CircleShape,
                                     ).size(24.dp),
                         )
@@ -126,30 +128,33 @@ fun SettingsScreen(
                     },
                 )
             }
-            var hue by remember(seedColorHue) { mutableFloatStateOf(seedColorHue) }
+            var seedColorLong by remember(seedColor) { mutableLongStateOf(seedColor) }
             if (showSeedColorDialog) {
                 MinimalDialog(
                     onDismissRequest = {
-                        hue = seedColorHue
+                        seedColorLong = seedColor
                         showSeedColorDialog = false
                     },
                     onConfirmButton = {
-                        mainViewModel.setSeedColorHue(hue)
+                        mainViewModel.setSeedColor(seedColorLong)
                         showSeedColorDialog = false
                     },
                     extraButtonText = "Reset",
                     onExtraButton = {
-                        hue = DefaultSeedColor.toHsv().first()
+                        seedColorLong = DefaultSeedColor.toColorLong()
                     },
                 ) {
                     BoxWithConstraints {
-                        HueSelector(
-                            onHueChanged = {
-                                hue = it
+                        HueSaturationSelector(
+                            onChange = { selectedHue, selectedSaturation ->
+                                val selectedColor = Color.hsl(selectedHue, selectedSaturation, 0.5f)
+                                seedColorLong = selectedColor.toColorLong()
                             },
-                            initialHue = hue,
-                            diameter = maxWidth - 32.dp, // 256.dp,
-                            colorPatchBorder = 2.dp,
+                            initialHue = Color.fromColorLong(seedColorLong).toHsl().component1(),
+                            initialSaturation = Color.fromColorLong(seedColorLong).toHsl().component2(),
+                            maxSaturation = 1f,
+                            minSaturation = 0.5f,
+                            diameter = maxWidth - 32.dp,
                         )
                     }
                 }
@@ -157,7 +162,7 @@ fun SettingsScreen(
         }
 
         Spacer(
-            modifier = Modifier.height(16.dp),
+            modifier = Modifier.height(ElevatedCardSpacing),
         )
 
         ElevatedCard {
@@ -174,22 +179,21 @@ fun SettingsScreen(
         }
 
         Spacer(
-            modifier = Modifier.height(16.dp),
+            modifier = Modifier.height(ElevatedCardSpacing),
         )
 
         ElevatedCard {
             // Developer settings
-            var enableDeveloperSettings by remember { mutableStateOf(false) }
             SwitchPreference(
                 headlineContent = { Text("Show developer settings") },
-                isChecked = enableDeveloperSettings,
+                isChecked = developerSettingsEnabled,
                 onCheckedChange = {
-                    enableDeveloperSettings = !enableDeveloperSettings
+                    mainViewModel.setDeveloperSettings(!developerSettingsEnabled)
                 },
             )
             // Developer settings entry hidden unless enabled
             AnimatedVisibility(
-                visible = enableDeveloperSettings,
+                visible = developerSettingsEnabled,
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut(),
             ) {

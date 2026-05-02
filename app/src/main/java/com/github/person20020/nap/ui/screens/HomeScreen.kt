@@ -1,57 +1,79 @@
 package com.github.person20020.nap.ui.screens
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.github.person20020.nap.Nap
 import com.github.person20020.nap.ui.components.ColumnWithContentPadding
-import com.github.person20020.nap.ui.components.HueSelector
-import com.github.person20020.nap.ui.components.ScreenTitle
+import com.github.person20020.nap.ui.components.TimeDisplay
 import com.github.person20020.nap.viewmodels.MainViewModel
 
 @Composable
 fun HomeScreen(mainViewModel: MainViewModel) {
-    val seedColorHue by mainViewModel.seedColorHue.collectAsStateWithLifecycle()
-
     ColumnWithContentPadding(
         modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        ScreenTitle(
-            text = "Home",
-        )
+        var enabled by remember { mutableStateOf(true) }
+        SingleChoiceSegmentedButtonRow {
+            SegmentedButton(
+                selected = enabled,
+                shape =
+                    SegmentedButtonDefaults.itemShape(
+                        index = 0,
+                        count = 2,
+                    ),
+                icon = {},
+                onClick = {
+                    enabled = true
+                },
+            ) {
+                Text("Enabled")
+            }
+            SegmentedButton(
+                selected = !enabled,
+                shape =
+                    SegmentedButtonDefaults.itemShape(
+                        index = 1,
+                        count = 2,
+                    ),
+                icon = {},
+                onClick = {
+                    enabled = false
+                },
+            ) {
+                Text("Disabled")
+            }
+        }
 
-        HueSelector(
-            modifier =
-                Modifier
-                    .padding(vertical = 16.dp),
-            onHueChanged = {
-                mainViewModel.setSeedColorHue(it)
-                // Log.d("HueSelector", "Selected hue: ${it.toString()}")
+        Spacer(modifier = Modifier.weight(0.5f))
+        val totalTime = 2 * 60
+        var remainingTime by remember { mutableIntStateOf(1 * 60 + 15) }
+        var paused by remember { mutableStateOf(false) }
+        TimeDisplay(
+            remainingTime = remainingTime.toLong(),
+            totalTime = totalTime.toLong(),
+            paused = paused,
+            onPauseResume = {
+                remainingTime = if (remainingTime >= 15) remainingTime - 15 else 0
+                paused = !paused
             },
-            initialHue = seedColorHue,
-            diameter = 300.dp,
-            colorPatchBorder = 2.dp,
+            onReset = {
+                remainingTime = totalTime
+            },
         )
 
-        // Seed color sample
-        Box(
-            modifier =
-                Modifier
-                    .background(color = Color.hsv(seedColorHue, 1f, 1f), shape = RoundedCornerShape(25))
-                    .padding(32.dp),
-        )
+        Spacer(modifier = Modifier.weight(1f))
     }
 }

@@ -5,5 +5,7 @@ import androidx.compose.ui.unit.dp
 
 val ContentPadding = PaddingValues(all = 16.dp)
 
+val ElevatedCardSpacing = 16.dp
+
 val DialogCornerRadius = 32.dp
 val DialogButtonSpacerWidth = 8.dp

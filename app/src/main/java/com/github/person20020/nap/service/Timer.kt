@@ -11,6 +11,8 @@ class Timer : Service() {
         (application as Nap).repository
     }
 
+    // TODO: Make all of this work
+
     override fun onCreate() {
         super.onCreate()
         Toast.makeText(this, "service started", Toast.LENGTH_SHORT).show()

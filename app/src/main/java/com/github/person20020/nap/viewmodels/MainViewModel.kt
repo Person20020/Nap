@@ -20,9 +20,13 @@ class MainViewModel(
     val dynamicColors: StateFlow<Boolean> =
         prefs.dynamicColors
             .stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(5000), initialValue = false)
-    val seedColorHue: StateFlow<Float> =
-        prefs.seedColorHue
-            .stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(5000), initialValue = 0f)
+    val seedColor: StateFlow<Long> =
+        prefs.seedColor
+            .stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(5000), initialValue = 0L)
+
+    val developerSettings: StateFlow<Boolean> =
+        prefs.developerSettings
+            .stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(5000), initialValue = false)
 
     fun setDarkTheme(value: Int) {
         viewModelScope.launch {
@@ -36,9 +40,15 @@ class MainViewModel(
         }
     }
 
-    fun setSeedColorHue(value: Float) {
+    fun setSeedColor(value: Long) {
         viewModelScope.launch {
             prefs.setSeedColor(value)
+        }
+    }
+
+    fun setDeveloperSettings(value: Boolean) {
+        viewModelScope.launch {
+            prefs.setDeveloperSettings(value)
         }
     }
 
